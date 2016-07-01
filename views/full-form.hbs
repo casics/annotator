@@ -1,0 +1,140 @@
+<br>
+<!-- Repo info panel -->
+<div class="panel panel-default">
+  {{#if repo}}
+    <div class="panel-heading">
+      <h3 class="panel-title">Repository <a style="text-decoration: underline" target="_blank"  href="https://github.com/{{repo.owner}}/{{repo.name}}">https://github.com/{{repo.owner}}/{{repo.name}}</a></h3>
+    </div>
+    <div class="panel-body">
+      <table>
+        <tr><th style="vertical-align: top;" width="100px">Repo id</th>     <td style="vertical-align: top">{{repo.id}}</td></tr>
+        <tr><th style="vertical-align: top">Owner</th>       <td style="vertical-align: top">{{repo.owner}}</td></tr>
+        <tr><th style="vertical-align: top">Name</th>        <td style="vertical-align: top">{{repo.name}}</td></tr>
+        <tr><th style="vertical-align: top">Description</th> <td style="vertical-align: top">{{{repo.description}}}</td></tr>
+        <tr><th style="vertical-align: top">Languages</th>   <td style="vertical-align: top">{{#each repo.languages}}{{name}}, {{/each}}</td></tr>
+        <tr><th style="vertical-align: top">Licenses</th>    <td style="vertical-align: top">{{#each repo.licenses}}{{name}}, {{/each}}</td></tr>
+        <tr><th style="vertical-align: top">Is visible?</th> <td style="vertical-align: top">{{repo.is_visible}}</td></tr>
+        <tr><th style="vertical-align: top">Is deleted?</th> <td style="vertical-align: top">{{repo.is_deleted}}</td></tr>
+        <tr><th style="vertical-align: top">Topics</th>      <td style="vertical-align: top">
+          <ul>
+            {{#each repo.topics}}
+              <li>{{title}} <input type="button" type="submit" value="Remove" onclick="removeTopic('{{key}}');"></li>
+            {{/each}}
+          </ul></td></tr>
+        <tr><th style="vertical-align: top">Functions</th>   <td style="vertical-align: top">{{#each repo.functions}}{{lcsh}}<br>{{/each}}</td></tr>
+      </table>
+    </div>
+  {{else}}
+    <div class="panel-heading">
+      <h3 class="panel-title">Repository search</h3>
+    </div>
+    <center>
+      <div class="panel-body">
+        <form action="/post-github-lookup" method="POST" role="form">
+          <div>
+            <div class="input-group">
+              <div class="input-group">
+                <input name="github_search_string" type="text" id="searchInput" class="form-control" placeholder="Repo ID or owner/name">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-primary" onclick="this.form.submit()">Look up</button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </center>
+  {{/if}}
+</div>
+
+<!-- LCSH search panel -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Library of Concress Subject Heading search</h3>
+  </div>
+
+  <div class="panel-body">
+    <center>
+      <form action="/post-lcsh-search" method="POST" role="form">
+        <div>
+          <div class="input-group">
+            <div class="input-group">
+              <input name="lcsh_search_string" type="text" id="searchInput" class="form-control" placeholder="Search LCSH terms for...">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary" onclick="this.form.submit()">Search</button>
+              </span>
+            </div>
+          </div>
+          <br>
+          <input name="search_alt_labels" type="hidden" value="false">
+          <input name="search_alt_labels" id="checkSearchAlt" type="checkbox" value="true" checked="true">
+          <label for="search_alt_labels">Search alt labels</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          <input name="search_substrings" type="hidden" value="false">
+          <input name="search_substrings" id="checkSubstringMatch" type="checkbox" value="true" checked="true">
+          <label for="search_substrings">Substring match</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          <input name="use_regexp" type="hidden" value="false">
+          <input name="use_regexp" id="checkRegexp" type="checkbox" value="true" checked="true">
+          <label for="use_regexp">Regexp</label>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+          <input name="topmost" type="hidden" value="false">
+          <input name="topmost" id="checkTopmost" type="checkbox" value="true" checked="true">
+          <label for="topmost">Get topmost terms</label>
+        </div>
+      </form>
+    </center>
+  </div>
+</div>
+
+<!-- Annotation panel -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">LCSH search results</h3>
+  </div>
+  {{#if terms}}
+    <div class="panel-body">
+      <center>
+        <button type="button" class="btn btn-primary" onclick="sendSelections();">Add selections to topics</button>
+        &nbsp;
+        <button type="button" class="btn btn-default" onclick="clearSelections();">Clear selections</button>
+        <br>
+        <br>
+        {{#if use_topmost}}
+          {{total_topmost}} top-level terms traced from {{total_terms}} terms found by searching for "<b>{{search}}</b>".
+        {{else}}
+          {{total_terms}} terms found by searching for "<b>{{search}}</b>"
+        {{/if}}
+        <br>
+        {{#if search_alt_labels}}
+          Alt labels included in search.
+        {{else}}
+          Alt labels <b>excluded</b> from search.
+        {{/if}}
+        {{#if search_substrings}}
+          Substrings matched.
+        {{else}}
+          Searched for exact strings.
+        {{/if}}
+        {{#if use_regexp}}
+          Regexps used.
+        {{else}}
+          Regexp not used.
+        {{/if}}
+        <br>
+        {{#if truncated}}
+          <br>
+          <b><i>Warning: database search results were truncated (number of results exceeded {{result_limit}})</i></b>
+        {{/if}}
+        <br>
+      </center>
+      <div id="tree">
+      </div>
+    </div>
+  {{else}}
+    <center>
+      No results returned.
+    </center>
+
+  {{/if}}
+</div>
