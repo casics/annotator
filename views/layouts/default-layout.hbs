@@ -128,6 +128,18 @@
        return false;
      };
 
+     function clearSession() {
+       $.ajax({
+         type: 'POST',
+         url: '/post-clear-session',
+         // The array has to be passed either as JSON, or inside a {x: y} object.
+         data: {},
+         success: function(data) {
+           location = '/';
+         }
+       });
+     };
+
      function removeTopic(term) {
        $.ajax({
          type: 'POST',
@@ -146,10 +158,6 @@
            }
          },
          success: function(data) {
-           // Without this, a call to render() on the server will not
-           // update the page after /post-selection.  It should probably
-           // be fixed with a redirect in the server-side code (or something)
-           // but I couldn't get another solution to work.  This one does it.
            location = '/';
          }
        });

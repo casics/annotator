@@ -18,7 +18,7 @@
         <tr><th style="vertical-align: top">Topics</th>      <td style="vertical-align: top">
           <ul>
             {{#each repo.topics}}
-              <li>{{title}} <input type="button" type="submit" value="Remove" onclick="removeTopic('{{key}}');"></li>
+              <li>{{title}} <input type="submit" value="Remove" onclick="removeTopic('{{key}}');"></li>
             {{/each}}
           </ul></td></tr>
         <tr><th style="vertical-align: top">Functions</th>   <td style="vertical-align: top">{{#each repo.functions}}{{lcsh}}<br>{{/each}}</td></tr>
@@ -33,12 +33,10 @@
         <form action="/post-github-lookup" method="POST" role="form">
           <div>
             <div class="input-group">
-              <div class="input-group">
-                <input name="github_search_string" type="text" id="searchInput" class="form-control" placeholder="Repo ID or owner/name">
-                <span class="input-group-btn">
-                  <button type="submit" class="btn btn-primary" onclick="this.form.submit()">Look up</button>
-                </span>
-              </div>
+              <input name="github_search_string" type="text" id="searchInput" class="form-control" placeholder="Repo ID or owner/name">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary" onclick="this.form.submit()">Look up</button>
+              </span>
             </div>
           </div>
         </form>
@@ -56,32 +54,28 @@
   <div class="panel-body">
     <center>
       <form action="/post-lcsh-search" method="POST" role="form">
-        <div>
-          <div class="input-group">
-            <div class="input-group">
-              <input name="lcsh_search_string" type="text" id="searchInput" class="form-control" placeholder="Search LCSH terms for...">
-              <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary" onclick="this.form.submit()">Search</button>
-              </span>
-            </div>
-          </div>
-          <br>
-          <input name="search_alt_labels" type="hidden" value="false">
-          <input name="search_alt_labels" id="checkSearchAlt" type="checkbox" value="true" checked="true">
-          <label for="search_alt_labels">Search alt labels</label>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          <input name="search_substrings" type="hidden" value="false">
-          <input name="search_substrings" id="checkSubstringMatch" type="checkbox" value="true" checked="true">
-          <label for="search_substrings">Substring match</label>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          <input name="use_regexp" type="hidden" value="false">
-          <input name="use_regexp" id="checkRegexp" type="checkbox" value="true" checked="true">
-          <label for="use_regexp">Regexp</label>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-          <input name="topmost" type="hidden" value="false">
-          <input name="topmost" id="checkTopmost" type="checkbox" value="true" checked="true">
-          <label for="topmost">Get topmost terms</label>
+        <div class="input-group">
+          <input name="lcsh_search_string" type="text" id="searchInput" class="form-control" placeholder="Search LCSH terms for...">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary" onclick="this.form.submit()">Search</button>
+          </span>
         </div>
+        <br>
+        <input name="search_alt_labels" type="hidden" value="false">
+        <input name="search_alt_labels" id="checkSearchAlt" type="checkbox" value="true" checked="true">
+        <label for="search_alt_labels">Search alt labels</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="search_substrings" type="hidden" value="false">
+        <input name="search_substrings" id="checkSubstringMatch" type="checkbox" value="true" checked="true">
+        <label for="search_substrings">Substring match</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="use_regexp" type="hidden" value="false">
+        <input name="use_regexp" id="checkRegexp" type="checkbox" value="true" checked="true">
+        <label for="use_regexp">Regexp</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input name="topmost" type="hidden" value="false">
+        <input name="topmost" id="checkTopmost" type="checkbox" value="true" checked="true">
+        <label for="topmost">Get topmost terms</label>
       </form>
     </center>
   </div>
@@ -138,3 +132,15 @@
 
   {{/if}}
 </div>
+{{#if repo}}
+<br>
+<div class="panel-body">
+  <center>
+    <div class="input-group">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-warning" onclick="clearSession();">Clear session</button>
+      </span>
+    </div>
+  </center>
+</div>
+{{/if}}

@@ -276,6 +276,12 @@ app.post('/post-remove-topic', function(req, res) {
 });
 
 
+app.post('/post-clear-session', function(req, res) {
+    if (req.session)
+        req.session.destroy();
+    res.render('full-form');    
+});
+
 
 // The server also accepts requests in the form of URLs, and returns
 // human-readable info in the form of web pages containing the answers.
