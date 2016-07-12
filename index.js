@@ -135,11 +135,12 @@ app.post('/post-github-lookup', function(req, res) {
         var name  = query_parts[1];
         log.info('Searching for repository ' + owner + '/' + name);
         query = {owner: owner, name: name};
-    } else {
+    } else if (util.isPositiveInteger(input)) {
         // Input is assumed to be a repository id.
-        log.info('Searching for repository ' + req.params.id);
-        query = {_id: req.params.id};
-    }
+        log.info('Searching for repository ' + input);
+        query = {_id: input};
+    } else
+        return errorBadUserInput(input, 'GitHub repository identifier', res);
     REPOS.findOne(query, function(err, results) {
         if (err)
             return errorDatabaseAccess(REPOS, query, null, res, err);
@@ -147,7 +148,7 @@ app.post('/post-github-lookup', function(req, res) {
             log.warn('No session -- unable to save repo info');
         if (! results) {
             var notfound = github.blankRepoDescription();
-            notfound.id = '(Not found)';
+            notfound.id = input + ' (not found in database)';
             res.render('full-form', {repo: notfound});
         } else {
             renderFormWithRepoDescription(res, 'full-form', results, session);
@@ -502,6 +503,15 @@ function errorDatabaseAccess(db, query, operators, res, err) {
                          error: err});
     return false;
 };
+
+function errorBadUserInput(input, what, res) {
+    var problem = 'Cannot interpret "' + input + '" as a ' + what;
+    log.error(problem);
+    res.render('error', {message: problem,
+                         situation: 'form input',
+                         input: input});
+}
+
 
 
 // Main
