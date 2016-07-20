@@ -9,7 +9,7 @@ var result_limit   = (process.env.RESULT_LIMIT || 5000);
 var lcsh_host      = (process.env.LCSH_HOST    || 'localhost');
 var lcsh_port      = (process.env.LCSH_PORT    || 27017);
 
-var mongo_host     = (process.env.MONGO_HOST   || 'hyponym.caltech.edu');
+var mongo_host     = (process.env.MONGO_HOST   || 'synonym.caltech.edu');
 var mongo_port     = (process.env.MONGO_PORT   || 9988);
 var mongo_user     = (process.env.MONGO_USER);
 var mongo_password = (process.env.MONGO_PASSWORD);
