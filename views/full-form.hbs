@@ -77,6 +77,40 @@
         <input name="topmost" id="checkTopmost" type="checkbox" value="true" checked="true">
         <label for="topmost">Get topmost terms</label>
       </form>
+      <div style="font-style: italic; font-size: small">Regexp's use JavaScript syntax. Some specialized operators to keep in mind:<br>
+        <table>
+          <tr>
+            <th width="90px">Expression</th>
+            <th width="200px">Meaning</th>
+            <th width="90px">Expression</th>
+            <th>Meaning</th>
+          </tr>
+          <tr>
+            <td>\w</td>
+            <td>A word character</td>
+            <td>(x)</td>
+            <td>Grouping</td>
+          </tr>
+          <tr>
+            <td>\W</td>
+            <td>A nonword character</td>
+            <td>X|Y</td>
+            <td>Either X or Y</td>
+          </tr>
+          <tr>
+            <td>\s</td>
+            <td>A whitespace character</td>
+            <td>x(?=y)</td>
+            <td>Matches x only if x is followed by y</td>
+          </tr>
+          <tr>
+            <td>\S</td>
+            <td>A nonwhitespace character</td>
+            <td>x(?!y)</td>
+            <td>Matches x only if x is not followed by y</td>
+          </tr>
+        </table>
+      </div>
     </center>
   </div>
 </div>
