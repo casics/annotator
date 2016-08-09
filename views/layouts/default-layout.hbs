@@ -17,14 +17,22 @@
     <script src="/stylesheets/jquery.fancytree.wide.js" type="text/javascript"></script>
 
     <style>
-        span.fancytree-title {
-         white-space: pre-line;
-        }
+     span.fancytree-title {
+       white-space: pre-line;
+     }
 
-        body {
-          margin-left: 5px;
-          margin-right: 5px;
-        }
+     body {
+       margin-left: 5px;
+       margin-right: 5px;
+     }
+
+     .inline-list br {
+       content: ' ';
+     }
+
+     .inline-list br:after {
+       content: ',  ';
+     }
 
     </style>
 

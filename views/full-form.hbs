@@ -13,15 +13,39 @@
         <tr><th style="vertical-align: top">Description</th> <td style="vertical-align: top">{{{repo.description}}}</td></tr>
         <tr><th style="vertical-align: top">Languages</th>   <td style="vertical-align: top">{{#each repo.languages}}{{name}}, {{/each}}</td></tr>
         <tr><th style="vertical-align: top">Licenses</th>    <td style="vertical-align: top">{{#each repo.licenses}}{{name}}, {{/each}}</td></tr>
-        <tr><th style="vertical-align: top">Is visible?</th> <td style="vertical-align: top">{{repo.is_visible}}</td></tr>
-        <tr><th style="vertical-align: top">Is deleted?</th> <td style="vertical-align: top">{{repo.is_deleted}}</td></tr>
-        <tr><th style="vertical-align: top">Topics</th>      <td style="vertical-align: top">
-          <ul>
+        <tr><th style="vertical-align: top">Is visible?</th> <td style="vertical-align: top">
+          {{#if repo.is_visible}}
+            <font color="green">True</font>
+          {{else}}
+            <font color="red">False</font>
+          {{/if}}
+        </td></tr>
+        <tr><th style="vertical-align: top">Is deleted?</th> <td style="vertical-align: top">
+          {{#if repo.is_deleted}}
+            <font color="red">True</font>
+          {{else}}
+            <font color="green">False</font>
+          {{/if}}
+        </td></tr>
+        <tr><th style="vertical-align: top">Content type</th><td style="vertical-align: top">
+          {{#each repo.content_type}}
+            {{content}} (based on {{basis}})
+          {{else}}
+            <font color="orange">(No content type assigned yet)</font>
+          {{/each}}
+        </td></tr>
+        <tr><th style="vertical-align: top">Topics</th><td style="vertical-align: top">
+          <ul style="margin-left: -20px">
             {{#each repo.topics}}
               <li>{{title}} <input type="submit" value="Remove" onclick="removeTopic('{{key}}');"></li>
             {{/each}}
           </ul></td></tr>
         <tr><th style="vertical-align: top">Functions</th>   <td style="vertical-align: top">{{#each repo.functions}}{{lcsh}}<br>{{/each}}</td></tr>
+        <tr><th style="vertical-align: top">Files</th>   <td style="vertical-align: top">
+          <div class="inline-list"> 
+            {{#each repo.files}}{{this}}<br>{{/each}}
+          </div>
+        </td></tr>
       </table>
     </div>
   {{else}}
