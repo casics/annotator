@@ -4,6 +4,13 @@
   {{#if repo}}
     <div class="panel-heading">
       <h3 class="panel-title">Repository <a style="text-decoration: underline" target="_blank"  href="https://github.com/{{repo.owner}}/{{repo.name}}">https://github.com/{{repo.owner}}/{{repo.name}}</a></h3>
+
+
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button type="submit" class="btn btn-warning" onclick="clearSession();" style="float: right; margin-top: -15px">Clear session</button>
+            </span>
+          </div>
     </div>
     <div class="panel-body">
       <table>
@@ -147,11 +154,6 @@
   {{#if terms}}
     <div class="panel-body">
       <center>
-        <button type="button" class="btn btn-primary" onclick="sendSelections();">Add selections to topics</button>
-        &nbsp;
-        <button type="button" class="btn btn-default" onclick="clearSelections();">Clear selections</button>
-        <br>
-        <br>
         {{#if use_topmost}}
           {{total_topmost}} top-level terms traced from {{total_terms}} terms found by searching for "<b>{{search}}</b>".
         {{else}}
@@ -182,6 +184,13 @@
       </center>
       <div id="tree">
       </div>
+      <br>
+      <center>
+        <button type="button" class="btn btn-primary" onclick="sendSelections();">Add selections to topics</button>
+        &nbsp;
+        <button type="button" class="btn btn-default" onclick="clearSelections();">Clear selections</button>
+        <br>
+      </center>
     </div>
   {{else}}
     <center>
@@ -190,15 +199,3 @@
 
   {{/if}}
 </div>
-{{#if repo}}
-<br>
-<div class="panel-body">
-  <center>
-    <div class="input-group">
-      <span class="input-group-btn">
-        <button type="submit" class="btn btn-warning" onclick="clearSession();">Clear session</button>
-      </span>
-    </div>
-  </center>
-</div>
-{{/if}}
