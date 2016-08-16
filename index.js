@@ -124,7 +124,7 @@ app.get('/:owner/:name', function(req, res) {
 
 
 app.post('/post-github-lookup', function(req, res) {
-    var input   = req.body.github_search_string;
+    var input   = req.body.github_search_string.trim();
     var session = req.session;
     var query;
 
