@@ -82,7 +82,7 @@ var REPOS = githubdb.connect('mongodb://' + mongo_user + ':' + mongo_password
                             + '@' + mongo_host + ':' + mongo_port
                             + '/github?authSource=admin');
 
-var LCSH  = lcshdb.connect('mongodb://' + lcsh_host + ':' + lcsh_port + '/lcsh');
+var LCSH  = lcshdb.connect('mongodb://' + lcsh_host + ':' + lcsh_port + '/lcsh-db');
 
 
 // User-level routes.
