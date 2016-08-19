@@ -134,27 +134,34 @@
             <th>Meaning</th>
           </tr>
           <tr>
-            <td>\w</td>
+            <td><code>.</code></td>
+            <td>Any single character</td>
+            <td><code>*</code></td>
+            <td>Repeat previous pattern 0+ times</td>
+          </tr>
+
+          <tr>
+            <td><code>\w</code></td>
             <td>A word character</td>
-            <td>(x)</td>
+            <td><code>(x)</code></td>
             <td>Grouping</td>
           </tr>
           <tr>
-            <td>\W</td>
+            <td><code>\W</code></td>
             <td>A nonword character</td>
-            <td>X|Y</td>
+            <td><code>X|Y</code></td>
             <td>Either X or Y</td>
           </tr>
           <tr>
-            <td>\s</td>
+            <td><code>\s</code></td>
             <td>A whitespace character</td>
-            <td>x(?=y)</td>
+            <td><code>x(?=y)</code></td>
             <td>Matches x only if x is followed by y</td>
           </tr>
           <tr>
-            <td>\S</td>
+            <td><code>\S</code></td>
             <td>A nonwhitespace character</td>
-            <td>x(?!y)</td>
+            <td><code>x(?!y)</code></td>
             <td>Matches x only if x is not followed by y</td>
           </tr>
         </table>
