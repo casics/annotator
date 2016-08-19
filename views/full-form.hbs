@@ -34,6 +34,23 @@
             <font color="green">False</font>
           {{/if}}
         </td></tr>
+        <tr><th style="vertical-align: top">Is fork?</th> <td style="vertical-align: top">
+          {{#equal repo.fork "false"}}
+            No
+          {{else}}
+            Yes; 
+            {{#if repo.fork.parent}}
+              parent = <a style="text-decoration: underline" target="_blank" href="https://github.com/{{repo.fork.parent}}">{{repo.fork.parent}}</a>
+            {{else}}
+              parent unknown
+            {{/if}},
+            {{#if repo.fork.root}}
+              root = <a style="text-decoration: underline" target="_blank" href="https://github.com/{{repo.fork.root}}">{{repo.fork.root}}</a>
+            {{else}}
+              root unknown
+            {{/if}}
+            {{/equal}}
+        </td></tr>
         <tr><th style="vertical-align: top">Content type</th><td style="vertical-align: top">
           {{#each repo.content_type}}
             {{content}} (based on {{basis}})

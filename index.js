@@ -58,6 +58,17 @@ hbs = handlebars.create({defaultLayout: 'default-layout',
                                  if (x) return JSON.stringify(x);
                                  else return JSON.stringify('');
                              },
+                             equal: function(lvalue, rvalue, options) {
+                                 if (arguments.length < 3)
+                                     throw new Error("#equal needs 2 parameters");
+                                 if (lvalue != rvalue)
+                                     return options.inverse(this);
+                                 else
+                                     return options.fn(this);
+                             },
+                             forkinfo: function(x) {
+                                 log.info(x.parent);
+                             },
                          } });
 
 app.engine('hbs', hbs.engine);
