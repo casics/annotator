@@ -226,7 +226,7 @@ app.post('/post-lcsh-search', function(req, res) {
     }
 
     var rmsg = use_regexp ? ' (regexp)' : ' (not regexp)';
-    log.info('post-form: searching for "' + pattern + '"' + rmsg);
+    log.info('post-lcsh-search: searching for "' + pattern + '"' + rmsg);
     var query = {$or: [ {_id: pattern}, {label: pattern} ]};
     if (search_alt_labels) {
         query['$or'].push({alt_labels: pattern});
@@ -244,10 +244,12 @@ app.post('/post-lcsh-search', function(req, res) {
                 var total_topmost;
                 if (use_topmost) {
                     total_topmost = terms_array.length;
-                    log.info('post-form: ' + total_topmost + ' topmost terms found');
+                    log.info('post-lcsh-search: ' + total_topmost +
+                             ' topmost terms found');
                 } else {
                     total_topmost = 0;
-                    log.info('post-form: ' + total_topmost + ' terms found');
+                    log.info('post-lcsh-search: ' + total_topmost +
+                             ' terms found');
                 }
                 var context = {repo: repo,
                                search: req.body.lcsh_search_string,
@@ -263,6 +265,37 @@ app.post('/post-lcsh-search', function(req, res) {
                 res.render('full-form', context);
             });
         });
+});
+
+
+app.post('/post-lcsh-frequent-terms', function(req, res) {
+    if (! req.session || ! req.session.repo)
+        return errorLostSession(res);
+
+    var selected = req.body.terms['selected'];
+    if (typeof selected === 'string')
+        selected = [selected];
+    if (selected) {
+        var owner = req.session.repo.owner;
+        var name  = req.session.repo.name;
+        log.info('post-lcsh-frequent-terms: adding topics to ' + owner + '/' + name);
+        log.info('└─ Terms: ' + selected);
+
+        var query = {owner: owner, name: name};
+        var ops   = {$push: {'topics.lcsh': {$each: selected}}};
+        REPOS.findOneAndUpdate(
+            query,
+            ops,
+            {upsert: false, new: true},
+            function(err, results) {
+                if (err) 
+                    return errorDatabaseAccess(REPOS, query, ops, res, err);
+                renderFormWithRepoDescription(res, 'full-form', results, req.session);
+            });
+    } else {
+        log.info('post-lcsh-frequent-terms: nothing selected');
+        res.render('full-form', {repo: repo});
+    }
 });
 
 
