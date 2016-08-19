@@ -88,8 +88,13 @@
 <div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Frequently-used Library of Concress Subject Headings <em class="text-info">(with comments)</em></h3>
+    <div class="input-group">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-info" data-toggle="collapse" data-target="#frequent"" style="float: right; margin-top: -15px">Show</button>
+      </span>
+    </div>
   </div>
-  <div class="panel-body">
+  <div id="frequent" class="panel-body collapse" data-toggle="false">
     <center>
       <form action="/post-lcsh-frequent-terms" method="POST" role="form">
         <table>
