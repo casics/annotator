@@ -14,27 +14,18 @@
     </div>
     <div class="panel-body">
       <table>
-        <tr><th style="vertical-align: top;" width="100px">Repo id</th>     <td style="vertical-align: top">{{repo.id}}</td></tr>
-        <tr><th style="vertical-align: top">Owner</th>       <td style="vertical-align: top">{{repo.owner}}</td></tr>
-        <tr><th style="vertical-align: top">Name</th>        <td style="vertical-align: top">{{repo.name}}</td></tr>
+        <tr><th style="vertical-align: top;" width="110px">Repo id</th>     <td style="vertical-align: top">{{repo.id}}</td></tr>
+        <tr><th style="vertical-align: top">Owner + name</th><td style="vertical-align: top">{{repo.owner}}/{{repo.name}}</td></tr>
         <tr><th style="vertical-align: top">Description</th> <td style="vertical-align: top">{{{repo.description}}}</td></tr>
         <tr><th style="vertical-align: top">Languages</th>   <td style="vertical-align: top">{{#each repo.languages}}{{name}}, {{/each}}</td></tr>
-        <tr><th style="vertical-align: top">Licenses</th>    <td style="vertical-align: top">{{#each repo.licenses}}{{name}}, {{/each}}</td></tr>
-        <tr><th style="vertical-align: top">Is visible?</th> <td style="vertical-align: top">
+        <tr><th style="vertical-align: top">Visible?</th> <td style="vertical-align: top">
           {{#if repo.is_visible}}
             <font color="green">True</font>
           {{else}}
             <font color="red">False</font>
           {{/if}}
         </td></tr>
-        <tr><th style="vertical-align: top">Is deleted?</th> <td style="vertical-align: top">
-          {{#if repo.is_deleted}}
-            <font color="red">True</font>
-          {{else}}
-            <font color="green">False</font>
-          {{/if}}
-        </td></tr>
-        <tr><th style="vertical-align: top">Is fork?</th> <td style="vertical-align: top">
+        <tr><th style="vertical-align: top">Fork?</th> <td style="vertical-align: top">
           {{#equal repo.fork "false"}}
             No
           {{else}}
@@ -58,6 +49,11 @@
             <font color="orange">(No content type assigned yet)</font>
           {{/each}}
         </td></tr>
+        <tr><th style="vertical-align: top">Files</th>   <td style="vertical-align: top">
+          <div class="inline-list"> 
+            {{#each repo.files}}{{this}}<br>{{/each}}
+          </div>
+        </td></tr>
         <tr><th style="vertical-align: top">Topics</th><td style="vertical-align: top">
           <ul style="margin-left: -20px">
             {{#each repo.topics}}
@@ -65,11 +61,6 @@
             {{/each}}
           </ul></td></tr>
         <tr><th style="vertical-align: top">Functions</th>   <td style="vertical-align: top">{{#each repo.functions}}{{lcsh}}<br>{{/each}}</td></tr>
-        <tr><th style="vertical-align: top">Files</th>   <td style="vertical-align: top">
-          <div class="inline-list"> 
-            {{#each repo.files}}{{this}}<br>{{/each}}
-          </div>
-        </td></tr>
       </table>
     </div>
   {{else}}
@@ -111,7 +102,7 @@
           <tr>
             <td>
               <input name="terms[selected]" type="checkbox" value="sh98001621">
-              <label for="terms[sh98001621]" style="font-weight: normal">sh98001621: Plug-ins <em class="text-info">(Non-standalone utilities that only work inside other software)</em></label>
+              <label for="terms[sh98001621]" style="font-weight: normal">sh98001621: Plug-ins <em class="text-info">(Non-standalone utilities that only work inside composite apps or frameworks)</em></label>
             </td>
           </tr>
           <tr>
@@ -123,7 +114,7 @@
           <tr>
             <td>
               <input name="terms[selected]" type="checkbox" value="sh90001980">
-              <label for="terms[sh90001980]" style="font-weight: normal">sh90001980: Application software <em class="text-info">(A typical standalone application)</em></label>
+              <label for="terms[sh90001980]" style="font-weight: normal">sh90001980: Application software <em class="text-info">(Typical standalone application software)</em></label>
             </td>
           </tr>
           <tr>
