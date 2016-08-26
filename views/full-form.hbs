@@ -14,18 +14,18 @@
     </div>
     <div class="panel-body">
       <table>
-        <tr><th style="vertical-align: top;" width="110px">Repo id</th>     <td style="vertical-align: top">{{repo.id}}</td></tr>
+        <tr><th style="vertical-align: top;" width="150px">Repo id</th>     <td style="vertical-align: top">{{repo.id}}</td></tr>
         <tr><th style="vertical-align: top">Owner + name</th><td style="vertical-align: top">{{repo.owner}}/{{repo.name}}</td></tr>
         <tr><th style="vertical-align: top">Description</th> <td style="vertical-align: top">{{{repo.description}}}</td></tr>
         <tr><th style="vertical-align: top">Languages</th>   <td style="vertical-align: top">{{#each repo.languages}}{{name}}, {{/each}}</td></tr>
-        <tr><th style="vertical-align: top">Visible?</th> <td style="vertical-align: top">
+        <tr><th style="vertical-align: top">Is the repo visible?</th> <td style="vertical-align: top">
           {{#if repo.is_visible}}
             <font color="green">True</font>
           {{else}}
             <font color="red">False</font>
           {{/if}}
         </td></tr>
-        <tr><th style="vertical-align: top">Fork?</th> <td style="vertical-align: top">
+        <tr><th style="vertical-align: top">Is this repo a fork?</th> <td style="vertical-align: top">
           {{#equal repo.fork "false"}}
             No
           {{else}}
@@ -42,6 +42,34 @@
             {{/if}}
             {{/equal}}
         </td></tr>
+        <tr><th style="vertical-align: top">Num. of commits</th>
+        {{#if repo.num_commits}}
+          <td style="vertical-align: top">{{repo.num_commits}}</td>
+        {{else}}
+          <td style="vertical-align: top"><font color="yellow">Data not gathered</font></td>
+        {{/if}}
+        </tr>
+        <tr><th style="vertical-align: top">Num. of releases</th>
+          {{#if repo.num_releases}}
+            <td style="vertical-align: top">{{repo.num_releases}}</td>
+          {{else}}
+            <td style="vertical-align: top"><font color="yellow">Data not gathered</font></td>
+          {{/if}}
+        </tr>
+        <tr><th style="vertical-align: top">Num. of branches</th>
+          {{#if repo.num_branches}}
+            <td style="vertical-align: top">{{repo.num_branches}}</td>
+          {{else}}
+            <td style="vertical-align: top"><font color="yellow">Data not gathered</font></td>
+          {{/if}}
+        </tr>
+        <tr><th style="vertical-align: top">Num. of contributors</th>
+          {{#if repo.num_contributors}}
+            <td style="vertical-align: top">{{repo.num_contributors}}</td>
+          {{else}}
+            <td style="vertical-align: top"><font color="yellow">Data not gathered</font></td>
+          {{/if}}
+        </tr>
         <tr><th style="vertical-align: top">Content type</th><td style="vertical-align: top">
           {{#each repo.content_type}}
             {{content}} (based on {{basis}})
