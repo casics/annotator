@@ -58,14 +58,36 @@ hbs = handlebars.create({defaultLayout: 'default-layout',
                                  if (x) return JSON.stringify(x);
                                  else return JSON.stringify('');
                              },
-                             equal: function(lvalue, rvalue, options) {
-                                 if (arguments.length < 3)
-                                     throw new Error("#equal needs 2 parameters");
-                                 if (lvalue != rvalue)
-                                     return options.inverse(this);
-                                 else
-                                     return options.fn(this);
+                             // General logical operators.
+                             // Usage example: {{#if (and (ne x 0) (ne x 1))}}
+                             eq: function (v1, v2) {
+                                 return v1 === v2;
                              },
+                             ne: function (v1, v2) {
+                                 return v1 !== v2;
+                             },
+                             lt: function (v1, v2) {
+                                 return v1 < v2;
+                             },
+                             gt: function (v1, v2) {
+                                 return v1 > v2;
+                             },
+                             lte: function (v1, v2) {
+                                 return v1 <= v2;
+                             },
+                             gte: function (v1, v2) {
+                                 return v1 >= v2;
+                             },
+                             and: function (v1, v2) {
+                                 return v1 && v2;
+                             },
+                             or: function (v1, v2) {
+                                 return v1 || v2;
+                             },
+                             not: function (v1) {
+                                 return !v1;
+                             },
+                             // Specialized just for CASICS.
                              forkinfo: function(x) {
                                  log.info(x.parent);
                              },
