@@ -61,10 +61,10 @@ hbs = handlebars.create({defaultLayout: 'default-layout',
                              // General logical operators.
                              // Usage example: {{#if (and (ne x 0) (ne x 1))}}
                              eq: function (v1, v2) {
-                                 return v1 === v2;
+                                 return v1 == v2;
                              },
                              ne: function (v1, v2) {
-                                 return v1 !== v2;
+                                 return v1 != v2;
                              },
                              lt: function (v1, v2) {
                                  return v1 < v2;
