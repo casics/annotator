@@ -78,9 +78,13 @@
           {{/each}}
         </td></tr>
         <tr><th style="vertical-align: top">Files</th>   <td style="vertical-align: top">
-          <div class="inline-list"> 
-            {{#each repo.files}}{{this}}<br>{{/each}}
-          </div>
+          {{#if (eq repo.files -1)}}
+            <font color="red">Empty</font>
+          {{else}}
+            <div class="inline-list"> 
+              {{#each repo.files}}{{this}}<br>{{/each}}
+            </div>
+          {{/if}}
         </td></tr>
         <tr><th style="vertical-align: top">Topics</th><td style="vertical-align: top">
           <ul style="margin-left: -20px">
