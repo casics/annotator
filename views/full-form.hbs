@@ -20,9 +20,9 @@
         <tr><th style="vertical-align: top">Languages</th>   <td style="vertical-align: top">{{#each repo.languages}}{{name}}, {{/each}}</td></tr>
         <tr><th style="vertical-align: top">Is the repo visible?</th> <td style="vertical-align: top">
           {{#if repo.is_visible}}
-            <font color="green">True</font>
+            <font color="green">Yes</font>
           {{else}}
-            <font color="red">False</font>
+            <font color="red">No</font>
           {{/if}}
         </td></tr>
         <tr><th style="vertical-align: top">Is this repo a fork?</th> <td style="vertical-align: top">
@@ -46,7 +46,7 @@
           {{#if (or (eq repo.num_commits 0) repo.num_commits)}}
             <td style="vertical-align: top">{{repo.num_commits}}</td>
           {{else}}
-            <or<font color="purple">Data not gathered</font></td>
+            <td style="vertical-align: top"><font color="purple">Data not gathered</font></td>
           {{/if}}
         </tr>
         <tr><th style="vertical-align: top">Num. of releases</th>
@@ -177,7 +177,25 @@
           <tr>
             <td>
               <input name="terms[selected]" type="checkbox" value="sh93002168">
-              <label for="terms[sh93002168]" style="font-weight: normal">sh93002168: Graphical user interfaces</label>
+              <label for="terms[sh93002168]" style="font-weight: normal">sh93002168: Graphical user interfaces <em class="text-info">(add sh2008009921 too if apropriate)</em></label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="sh2008009921">
+              <label for="terms[sh2008009921]" style="font-weight: normal">sh2008009921: Web-based user interfaces</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="sh2006004062">
+              <label for="terms[sh2006004062]" style="font-weight: normal">sh2006004062: Ajax (Web site development technology)</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="sh85003487">
+              <label for="terms[sh85003487]" style="font-weight: normal">sh85003487: Algorithms</label>
             </td>
           </tr>
           <tr>
@@ -190,6 +208,12 @@
             <td>
               <input name="terms[selected]" type="checkbox" value="sh85136975">
               <label for="terms[sh85136975]" style="font-weight: normal">sh85136975: Translators</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="sh85098312">
+              <label for="terms[sh85098312]" style="font-weight: normal">sh85098312: Parsing (Computer grammar)</label>
             </td>
           </tr>
           <tr>
@@ -254,6 +278,12 @@
           </tr>
           <tr>
             <td>
+              <input name="terms[selected]" type="checkbox" value="sh93000502">
+              <label for="terms[sh93000502]" style="font-weight: normal">sh93000502: Client/server computing</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
               <input name="terms[selected]" type="checkbox" value="sh2008004883">
               <label for="terms[sh2008004883]" style="font-weight: normal">sh2008004883: Cloud computing</label>
             </td>
@@ -304,6 +334,18 @@
             <td>
               <input name="terms[selected]" type="checkbox" value="sh2013000169">
               <label for="terms[sh2013000169]" style="font-weight: normal">sh2013000169: Data logging</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="sh85029564">
+              <label for="terms[sh85029564]" style="font-weight: normal">sh85029564: Computers--Study and teaching</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="sh85093159">
+              <label for="terms[sh85093159]" style="font-weight: normal">sh85093159: Nucleotide sequence</label>
             </td>
           </tr>
         </table>
