@@ -2,97 +2,131 @@
 <!-- Repo info panel -->
 <div class="panel panel-default">
   {{#if repo}}
+
     <div class="panel-heading">
-      <h3 class="panel-title">Repository <a style="text-decoration: underline" target="_blank"  href="https://github.com/{{repo.owner}}/{{repo.name}}">https://github.com/{{repo.owner}}/{{repo.name}}</a></h3>
-
-
-          <div class="input-group">
-            <span class="input-group-btn">
-              <button type="submit" class="btn btn-warning" onclick="clearSession();" style="float: right; margin-top: -15px">Clear session</button>
-            </span>
-          </div>
+      <h3 class="panel-title">Repository
+        <a style="text-decoration: underline" target="_blank"
+           href="https://github.com/{{repo.owner}}/{{repo.name}}"
+        >https://github.com/{{repo.owner}}/{{repo.name}}</a>
+      </h3>
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button type="submit" class="btn btn-warning" onclick="clearSession();"
+                  style="float: right; margin-top: -15px">Clear session</button>
+        </span>
+      </div>
     </div>
+
     <div class="panel-body">
       <table>
-        <tr><th style="vertical-align: top;" width="150px">Repo id</th>     <td style="vertical-align: top">{{repo.id}}</td></tr>
-        <tr><th style="vertical-align: top">Owner + name</th><td style="vertical-align: top">{{repo.owner}}/{{repo.name}}</td></tr>
-        <tr><th style="vertical-align: top">Description</th> <td style="vertical-align: top">{{{repo.description}}}</td></tr>
-        <tr><th style="vertical-align: top">Languages</th>   <td style="vertical-align: top">{{#each repo.languages}}{{name}}, {{/each}}</td></tr>
-        <tr><th style="vertical-align: top">Is the repo visible?</th> <td style="vertical-align: top">
-          {{#if repo.is_visible}}
-            <font color="green">Yes</font>
-          {{else}}
-            <font color="red">No</font>
-          {{/if}}
-        </td></tr>
-        <tr><th style="vertical-align: top">Is this repo a fork?</th> <td style="vertical-align: top">
-          {{#if (eq repo.fork "false")}}
-            No
-          {{else}}
-            Yes; 
-            {{#if repo.fork.parent}}
-              parent = <a style="text-decoration: underline" target="_blank" href="https://github.com/{{repo.fork.parent}}">{{repo.fork.parent}}</a>
+        <tr><th style="vertical-align: top;" width="150px">Repo id</th>
+          <td style="vertical-align: top">{{repo.id}}&nbsp;&nbsp;&nbsp;&nbsp;
+            ({{repo.owner}}/{{repo.name}})</td>
+        </tr>
+        <tr><th style="vertical-align: top">Description</th>
+          <td style="vertical-align: top">{{{repo.description}}}</td>
+        </tr>
+        <tr><th style="vertical-align: top">Languages</th>
+          <td style="vertical-align: top">{{#each repo.languages}}{{name}}, {{/each}}</td>
+        </tr>
+        <tr><th style="vertical-align: top">Is the repo visible?</th>
+          <td style="vertical-align: top">
+            {{#if repo.is_visible}}
+              <font color="green">Yes</font>
             {{else}}
-              parent unknown
-            {{/if}},
-            {{#if repo.fork.root}}
-              root = <a style="text-decoration: underline" target="_blank" href="https://github.com/{{repo.fork.root}}">{{repo.fork.root}}</a>
-            {{else}}
-              root unknown
+              <font color="red">No</font>
             {{/if}}
-          {{/if}}
-        </td></tr>
+          </td>
+        </tr>
+        <tr><th style="vertical-align: top">Is this repo a fork?</th>
+          <td style="vertical-align: top">
+            {{#if (eq repo.fork "false")}}
+              No
+            {{else}}
+              Yes; 
+              {{#if repo.fork.parent}}
+                parent = <a style="text-decoration: underline" target="_blank"
+                            href="https://github.com/{{repo.fork.parent}}">{{repo.fork.parent}}</a>
+              {{else}}
+                parent unknown
+              {{/if}},
+              {{#if repo.fork.root}}
+                root = <a style="text-decoration: underline" target="_blank"
+                          href="https://github.com/{{repo.fork.root}}">{{repo.fork.root}}</a>
+              {{else}}
+                root unknown
+              {{/if}}
+            {{/if}}
+          </td>
+        </tr>
         <tr><th style="vertical-align: top">Num. of commits</th>
-          {{#if (or (eq repo.num_commits 0) repo.num_commits)}}
-            <td style="vertical-align: top">{{repo.num_commits}}</td>
-          {{else}}
-            <td style="vertical-align: top"><font color="purple">Data not gathered</font></td>
-          {{/if}}
+          <td style="vertical-align: top">
+            {{#if (or (eq repo.num_commits 0) repo.num_commits)}}
+              {{repo.num_commits}}
+            {{else}}
+              <font color="purple">Data not gathered</font>
+            {{/if}}
+          </td>
         </tr>
         <tr><th style="vertical-align: top">Num. of releases</th>
-          {{#if (or (eq repo.num_releases 0) repo.num_releases)}}
-            <td style="vertical-align: top">{{repo.num_releases}}</td>
-          {{else}}
-            <td style="vertical-align: top"><font color="purple">Data not gathered</font></td>
-          {{/if}}
+          <td style="vertical-align: top">
+            {{#if (or (eq repo.num_releases 0) repo.num_releases)}}
+              {{repo.num_releases}}
+            {{else}}
+              <font color="purple">Data not gathered</font>
+            {{/if}}
+          </td>
         </tr>
         <tr><th style="vertical-align: top">Num. of branches</th>
-          {{#if (or (eq repo.num_branches 0) repo.num_branches)}}
-            <td style="vertical-align: top">{{repo.num_branches}}</td>
-          {{else}}
-            <td style="vertical-align: top"><font color="purple">Data not gathered</font></td>
-          {{/if}}
+          <td style="vertical-align: top">
+            {{#if (or (eq repo.num_branches 0) repo.num_branches)}}
+              {{repo.num_branches}}
+            {{else}}
+              <font color="purple">Data not gathered</font>
+            {{/if}}
+          </td>
         </tr>
         <tr><th style="vertical-align: top">Num. of contributors</th>
-          {{#if (or (eq repo.num_contributors 0) repo.num_contributors)}}
-            <td style="vertical-align: top">{{repo.num_contributors}}</td>
-          {{else}}
-            <td style="vertical-align: top"><font color="purple">Data not gathered</font></td>
-          {{/if}}
+          <td style="vertical-align: top">
+            {{#if (or (eq repo.num_contributors 0) repo.num_contributors)}}
+              {{repo.num_contributors}}
+            {{else}}
+              <font color="purple">Data not gathered</font>
+            {{/if}}
+          </td>
         </tr>
-        <tr><th style="vertical-align: top">Content type</th><td style="vertical-align: top">
-          {{#each repo.content_type}}
-            {{content}} (based on {{basis}})
-          {{else}}
-            <font color="orange">(No content type assigned yet)</font>
-          {{/each}}
-        </td></tr>
-        <tr><th style="vertical-align: top">Files</th>   <td style="vertical-align: top">
-          {{#if (eq repo.files -1)}}
-            <font color="red">Empty</font>
-          {{else}}
-            <div class="inline-list"> 
-              {{#each repo.files}}{{this}}<br>{{/each}}
-            </div>
-          {{/if}}
-        </td></tr>
-        <tr><th style="vertical-align: top">Topics</th><td style="vertical-align: top">
-          <ul style="margin-left: -20px">
-            {{#each repo.topics}}
-              <li>{{title}} <input type="submit" value="Remove" onclick="removeTopic('{{key}}');"></li>
+        <tr><th style="vertical-align: top">Content type</th>
+          <td style="vertical-align: top">
+            {{#each repo.content_type}}
+              {{content}} (based on {{basis}})
+            {{else}}
+              <font color="orange">(No content type assigned yet)</font>
             {{/each}}
-          </ul></td></tr>
-        <tr><th style="vertical-align: top">Functions</th>   <td style="vertical-align: top">{{#each repo.functions}}{{lcsh}}<br>{{/each}}</td></tr>
+          </td>
+        </tr>
+        <tr><th style="vertical-align: top">Files</th>
+          <td>
+            {{#if (eq repo.files -1)}}
+              <font color="red">Empty</font>
+            {{else}}
+              <div class="inline-list"> 
+                {{#each repo.files}}{{this}}<br>{{/each}}
+              </div>
+            {{/if}}
+          </td>
+        </tr>
+        <tr><th style="vertical-align: top">Topics</th>
+          <td>
+            <ul style="margin-left: -20px">
+              {{#each repo.topics}}
+                <li>{{title}} <input type="submit" value="Remove" onclick="removeTopic('{{key}}');"></li>
+              {{/each}}
+            </ul>
+          </td>
+        </tr>
+        <tr><th style="vertical-align: top">Functions</th>
+          <td style="vertical-align: top">{{#each repo.functions}}{{lcsh}}<br>{{/each}}
+        </tr>
       </table>
     </div>
   {{else}}
