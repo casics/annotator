@@ -95,15 +95,6 @@
             {{/if}}
           </td>
         </tr>
-        <tr><th style="vertical-align: top">Content type</th>
-          <td style="vertical-align: top">
-            {{#each repo.content_type}}
-              {{content}} (based on {{basis}})
-            {{else}}
-              <font color="orange">(No content type assigned yet)</font>
-            {{/each}}
-          </td>
-        </tr>
         <tr><th style="vertical-align: top">Files</th>
           <td>
             {{#if (eq repo.files -1)}}
@@ -115,18 +106,81 @@
             {{/if}}
           </td>
         </tr>
-        <tr><th style="vertical-align: top">Topics</th>
-          <td>
+
+        <tr>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+        </tr>
+
+        <tr><th class="annotations" style="vertical-align: top">Content type</th>
+          <td class="annotations" style="vertical-align: top">
+            {{#each repo.content_type}}
+              {{content}} (based on {{basis}})
+            {{else}}
+              <font color="orange">(No content type assigned yet)</font>
+            {{/each}}
+          </td>
+        </tr>
+
+        <tr>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+        </tr>
+
+        <tr><th class="annotations" style="vertical-align: top">Usage</th>
+          <td class="annotations" >
             <ul style="margin-left: -20px">
-              {{#each repo.topics}}
-                <li>{{title}} <input type="submit" value="Remove" onclick="removeTopic('{{key}}');"></li>
+              {{#each repo.usage}}
+                <li>{{this}} <input type="submit" value="Remove"
+                                    onclick="removeUsage('{{this}}');"></li>
               {{/each}}
             </ul>
           </td>
         </tr>
-        <tr><th style="vertical-align: top">Functions</th>
-          <td style="vertical-align: top">{{#each repo.functions}}{{lcsh}}<br>{{/each}}
+
+        <tr>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
         </tr>
+
+        <tr><th class="annotations" style="vertical-align: top">Interfaces</th>
+          <td class="annotations" >
+            <ul style="margin-left: -20px">
+              {{#each repo.interfaces}}
+                <li>{{this}} <input type="submit" value="Remove"
+                                    onclick="removeInterface('{{this}}');"></li>
+              {{/each}}
+            </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+        </tr>
+
+        <tr><th class="annotations" style="vertical-align: top">Topics</th>
+          <td class="annotations">
+            <ul style="margin-left: -20px">
+              {{#each repo.topics}}
+                <li>{{title}} <input type="submit" value="Remove"
+                                     onclick="removeTopic('{{key}}');"></li>
+              {{/each}}
+            </ul>
+          </td>
+        </tr>
+
+        <tr>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+        </tr>
+
+        <tr><th class="annotations" style="vertical-align: top">Functions</th>
+          <td class="annotations"  style="vertical-align: top">
+            {{#each repo.functions}}{{lcsh}}<br>{{/each}}
+          </td>
+        </tr>
+
       </table>
     </div>
   {{else}}
@@ -138,9 +192,11 @@
         <form action="/post-github-lookup" method="POST" role="form">
           <div>
             <div class="input-group">
-              <input name="github_search_string" type="text" id="searchInput" class="form-control" placeholder="Repo ID or owner/name" autofocus>
+              <input name="github_search_string" type="text" id="searchInput"
+                     class="form-control" placeholder="Repo ID or owner/name" autofocus>
               <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary" onclick="this.form.submit()">Look up</button>
+                <button type="submit" class="btn btn-primary"
+                        onclick="this.form.submit()">Look up</button>
               </span>
             </div>
           </div>
@@ -150,13 +206,349 @@
   {{/if}}
 </div>
 
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Usage</h3>
+    <div class="input-group">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-info" data-toggle="collapse"
+                data-target="#usage""
+                style="float: right; margin-top: -15px">Show</button>
+      </span>
+    </div>
+  </div>
+  <div id="usage" class="panel-body collapse" data-toggle="false">
+    <center>
+      <form action="/post-usage-terms" method="POST" role="form">
+        <table>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="application">
+              <label for="terms[application]" style="font-weight: normal">Application software</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="component">
+              <label for="terms[component]" style="font-weight: normal">Component software</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="embedded">
+              <label for="terms[embedded]" style="font-weight: normal">Embedded/Embeddable software</label>
+            </td>
+          </tr>
+
+        </table>
+        <br>
+        <button type="submit" class="btn btn-primary"
+                onclick="this.form.submit()">Assign selected terms</button>
+      </form>
+    </center>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Interfaces</h3>
+    <div class="input-group">
+      <span class="input-group-btn">
+        <button type="submit" class="btn btn-info" data-toggle="collapse"
+                data-target="#interfaces""
+                style="float: right; margin-top: -15px">Show</button>
+      </span>
+    </div>
+  </div>
+  <div id="interfaces" class="panel-body collapse" data-toggle="false">
+    <center>
+      <form action="/post-interfaces-terms" method="POST" role="form">
+        <table>
+
+          <tr>
+            <th>UI</th>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="hardware user interface">
+              <label for="terms[hardware user interface]" style="font-weight: normal"> hardware user interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="musical instrument digital interface" style="margin-left: 15px">
+              <label for="terms[musical instrument digital interface]" style="font-weight: normal">musical instrument digital interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="hardware control panel" style="margin-left: 15px">
+              <label for="terms[hardware control panel]" style="font-weight: normal">hardware control panel</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="text-based interface">
+              <label for="terms[text-based interface]" style="font-weight: normal"> text-based interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="batch interface" style="margin-left: 15px">
+              <label for="terms[batch interface]" style="font-weight: normal">batch interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="command-line interface" style="margin-left: 15px">
+              <label for="terms[command-line interface]" style="font-weight: normal">command-line interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="interactive text-based interface" style="margin-left: 15px">
+              <label for="terms[interactive text-based interface]" style="font-weight: normal">interactive text-based interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="graphical user interface">
+              <label for="terms[graphical user interface]" style="font-weight: normal"> graphical user interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="desktop graphical user interface" style="margin-left: 15px">
+              <label for="terms[desktop graphical user interface]" style="font-weight: normal">desktop graphical user interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="web-based user interface" style="margin-left: 15px">
+              <label for="terms[web-based user interface]" style="font-weight: normal">web-based user interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="voice user interface">
+              <label for="terms[voice user interface]" style="font-weight: normal"> voice user interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="touch user interface">
+              <label for="terms[touch user interface]" style="font-weight: normal"> touch user interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="pen tablet interface" style="margin-left: 15px">
+              <label for="terms[pen tablet interface]" style="font-weight: normal">pen tablet interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="haptic user interface" style="margin-left: 15px">
+              <label for="terms[haptic user interface]" style="font-weight: normal">haptic user interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="Braille terminal" style="margin-left: 15px">
+              <label for="terms[Braille terminal]" style="font-weight: normal">Braille terminal</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="kinetic user interface">
+              <label for="terms[kinetic user interface]" style="font-weight: normal"> kinetic user interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="gesture-driven interface" style="margin-left: 15px">
+              <label for="terms[gesture-driven interface]" style="font-weight: normal">gesture-driven interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="brain-computer interface">
+              <label for="terms[brain-computer interface]" style="font-weight: normal"> brain-computer interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="virtual reality user interface">
+              <label for="terms[virtual reality user interface]" style="font-weight: normal"> virtual reality user interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <th>API</th>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="class library interface">
+              <label for="terms[class library interface]" style="font-weight: normal"> class library interface</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="message-passing interface">
+              <label for="terms[message-passing interface]" style="font-weight: normal"> message-passing interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="MPI" style="margin-left: 15px">
+              <label for="terms[MPI]" style="font-weight: normal">MPI</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="OpenMP" style="margin-left: 15px">
+              <label for="terms[OpenMP]" style="font-weight: normal">OpenMP</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="ZeroMQ" style="margin-left: 15px">
+              <label for="terms[ZeroMQ]" style="font-weight: normal">ZeroMQ</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="AMQP" style="margin-left: 15px">
+              <label for="terms[AMQP]" style="font-weight: normal">AMQP</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="network interface">
+              <label for="terms[network interface]" style="font-weight: normal">network interface</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="remote method invocation" style="margin-left: 15px">
+              <label for="terms[remote method invocation]" style="font-weight: normal">remote method invocation</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="Java RMI" style="margin-left: 30px">
+              <label for="terms[Java RMI]" style="font-weight: normal">Java RMI</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="CORBA" style="margin-left: 30px">
+              <label for="terms[CORBA]" style="font-weight: normal">CORBA</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="DCOM" style="margin-left: 30px">
+              <label for="terms[DCOM]" style="font-weight: normal">DCOM</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value=".NET" style="margin-left: 30px">
+              <label for="terms[.NET]" style="font-weight: normal">.NET</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="D-Bus" style="margin-left: 30px">
+              <label for="terms[D-Bus]" style="font-weight: normal">D-Bus</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="remote procedure call" style="margin-left: 15px">
+              <label for="terms[remote procedure call]" style="font-weight: normal">remote procedure call</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="XML-RPC" style="margin-left: 30px">
+              <label for="terms[XML-RPC]" style="font-weight: normal">XML-RPC</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="JSON-RPC" style="margin-left: 30px">
+              <label for="terms[JSON-RPC]" style="font-weight: normal">JSON-RPC</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="web services" style="margin-left: 15px">
+              <label for="terms[web services]" style="font-weight: normal">web services</label>
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="REST" style="margin-left: 30px">
+              <label for="terms[REST]" style="font-weight: normal">REST</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="SOAP" style="margin-left: 30px">
+              <label for="terms[SOAP]" style="font-weight: normal">SOAP</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="Ajax" style="margin-left: 30px">
+              <label for="terms[Ajax]" style="font-weight: normal">Ajax</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="WebSockets" style="margin-left: 30px">
+              <label for="terms[WebSockets]" style="font-weight: normal">WebSockets</label>
+            </td>
+          </tr>
+
+        </table>
+        <br>
+        <button type="submit" class="btn btn-primary"
+                onclick="this.form.submit()">Assign selected terms</button>
+      </form>
+    </center>
+  </div>
+</div>
+
+
 <!-- LCSH frequently used panel -->
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Frequently-used Library of Concress Subject Headings <em class="text-info">(with comments)</em></h3>
+    <h3 class="panel-title">Frequently-used LCSH topic terms
+      <em class="text-info">(with comments)</em></h3>
     <div class="input-group">
       <span class="input-group-btn">
-        <button type="submit" class="btn btn-info" data-toggle="collapse" data-target="#frequent"" style="float: right; margin-top: -15px">Show</button>
+        <button type="submit" class="btn btn-info" data-toggle="collapse"
+                data-target="#frequent""
+                style="float: right; margin-top: -15px">Show</button>
       </span>
     </div>
   </div>

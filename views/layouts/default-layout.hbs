@@ -34,6 +34,31 @@
        content: ',  ';
      }
 
+     .annotations {
+       color: darkblue;
+     }
+
+     .gray-row {
+       background-color: #fafafa;
+     }
+
+     input {
+       line-height: 100%;
+     }
+
+     input[value="Remove"] {
+       color: darkred;
+     }
+
+     .btn[data-toggle="collapse"] {
+       line-height: 100%;
+     }
+
+     ul {
+       margin-bottom: 0;
+     }
+
+
     </style>
 
     <script type="text/javascript">
@@ -170,6 +195,53 @@
          }
        });
      };
+
+     function removeUsage(term) {
+       $.ajax({
+         type: 'POST',
+         url: '/post-remove-usage',
+         // The array has to be passed either as JSON, or inside a {x: y} object.
+         data: {term: term},
+         error: function(jqxhr, options, thrownError) {
+           var response;
+           if (jqxhr.hasOwnProperty('responseJSON'))
+             response = jqxhr.responseJSON;
+           else
+             response = $.parseJSON(jqxhr.responseText);
+           if (response.errorCode === 1) {
+             alert(response.errorMessage + '  The page must be reloaded.');
+             window.location.replace(response.errorDestinationURL);
+           }
+         },
+         success: function(data) {
+           location = '/';
+         }
+       });
+     };
+
+     function removeInterface(term) {
+       $.ajax({
+         type: 'POST',
+         url: '/post-remove-interface',
+         // The array has to be passed either as JSON, or inside a {x: y} object.
+         data: {term: term},
+         error: function(jqxhr, options, thrownError) {
+           var response;
+           if (jqxhr.hasOwnProperty('responseJSON'))
+             response = jqxhr.responseJSON;
+           else
+             response = $.parseJSON(jqxhr.responseText);
+           if (response.errorCode === 1) {
+             alert(response.errorMessage + '  The page must be reloaded.');
+             window.location.replace(response.errorDestinationURL);
+           }
+         },
+         success: function(data) {
+           location = '/';
+         }
+       });
+     }
+
     </script>
 </head>
 <body>
