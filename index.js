@@ -198,7 +198,7 @@ app.post('/post-selection', function(req, res) {
     var owner = req.session.repo.owner;
     var name  = req.session.repo.name;
     var query = {owner: owner, name: name};
-    var ops   = {$push: {'topics.lcsh': {$each: terms}}};
+    var ops   = {$addToSet: {'topics.lcsh': {$each: terms}}};
     log.info('Adding topic terms to ' + owner + '/' + name);
     log.info('└─ Terms: ' + terms);
     REPOS.findOneAndUpdate(
@@ -304,7 +304,7 @@ app.post('/post-lcsh-frequent-terms', function(req, res) {
         log.info('└─ Terms: ' + selected);
 
         var query = {owner: owner, name: name};
-        var ops   = {$push: {'topics.lcsh': {$each: selected}}};
+        var ops   = {$addToSet: {'topics.lcsh': {$each: selected}}};
         REPOS.findOneAndUpdate(
             query,
             ops,
@@ -321,6 +321,68 @@ app.post('/post-lcsh-frequent-terms', function(req, res) {
 });
 
 
+app.post('/post-usage-terms', function(req, res) {
+    if (! req.session || ! req.session.repo)
+        return errorLostSession(res);
+
+    var selected = req.body.terms['selected'];
+    if (typeof selected === 'string')
+        selected = [selected];
+    if (selected) {
+        var owner = req.session.repo.owner;
+        var name  = req.session.repo.name;
+        log.info('post-usage-terms: adding to ' + owner + '/' + name);
+        log.info('└─ Terms: ' + selected);
+
+        var query = {owner: owner, name: name};
+        var ops   = {$addToSet: {'usage': {$each: selected}}};
+        REPOS.findOneAndUpdate(
+            query,
+            ops,
+            {upsert: false, new: true},
+            function(err, results) {
+                if (err) 
+                    return errorDatabaseAccess(REPOS, query, ops, res, err);
+                renderFormWithRepoDescription(res, 'full-form', results, req.session);
+            });
+    } else {
+        log.info('post-usage-terms: nothing selected');
+        res.render('full-form', {repo: repo});
+    }
+});
+
+
+app.post('/post-interfaces-terms', function(req, res) {
+    if (! req.session || ! req.session.repo)
+        return errorLostSession(res);
+
+    var selected = req.body.terms['selected'];
+    if (typeof selected === 'string')
+        selected = [selected];
+    if (selected) {
+        var owner = req.session.repo.owner;
+        var name  = req.session.repo.name;
+        log.info('post-interfaces-terms: adding to ' + owner + '/' + name);
+        log.info('└─ Terms: ' + selected);
+
+        var query = {owner: owner, name: name};
+        var ops   = {$addToSet: {'interfaces': {$each: selected}}};
+        REPOS.findOneAndUpdate(
+            query,
+            ops,
+            {upsert: false, new: true},
+            function(err, results) {
+                if (err) 
+                    return errorDatabaseAccess(REPOS, query, ops, res, err);
+                renderFormWithRepoDescription(res, 'full-form', results, req.session);
+            });
+    } else {
+        log.info('post-interfaces-terms: nothing selected');
+        res.render('full-form', {repo: repo});
+    }
+});
+
+
 app.post('/post-remove-topic', function(req, res) {
     if (! req.session || ! req.session.repo)
         return errorLostSession(res);
@@ -331,6 +393,50 @@ app.post('/post-remove-topic', function(req, res) {
     log.info('Removing topic term ' + term + ' from ' + owner + '/' + name);
     var query = {owner: owner, name: name};
     var ops   = {$pull: {'topics.lcsh': term}};
+    REPOS.findOneAndUpdate(
+        query,
+        ops,
+        {upsert: false, new: true},
+        function(err, results) {
+            if (err) 
+                return errorDatabaseAccess(REPOS, query, ops, res, err);
+            renderFormWithRepoDescription(res, 'full-form', results, req.session);
+        });
+});
+
+
+app.post('/post-remove-usage', function(req, res) {
+    if (! req.session || ! req.session.repo)
+        return errorLostSession(res);
+
+    var term  = req.body.term;
+    var owner = req.session.repo.owner;
+    var name  = req.session.repo.name;
+    log.info('Removing usage term ' + term + ' from ' + owner + '/' + name);
+    var query = {owner: owner, name: name};
+    var ops   = {$pull: {'usage': term}};
+    REPOS.findOneAndUpdate(
+        query,
+        ops,
+        {upsert: false, new: true},
+        function(err, results) {
+            if (err) 
+                return errorDatabaseAccess(REPOS, query, ops, res, err);
+            renderFormWithRepoDescription(res, 'full-form', results, req.session);
+        });
+});
+
+
+app.post('/post-remove-interface', function(req, res) {
+    if (! req.session || ! req.session.repo)
+        return errorLostSession(res);
+
+    var term  = req.body.term;
+    var owner = req.session.repo.owner;
+    var name  = req.session.repo.name;
+    log.info('Removing interface term ' + term + ' from ' + owner + '/' + name);
+    var query = {owner: owner, name: name};
+    var ops   = {$pull: {'interfaces': term}};
     REPOS.findOneAndUpdate(
         query,
         ops,
