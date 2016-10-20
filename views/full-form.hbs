@@ -127,12 +127,12 @@
           <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
         </tr>
 
-        <tr><th class="annotations" style="vertical-align: top">Usage</th>
+        <tr><th class="annotations" style="vertical-align: top">Kind</th>
           <td class="annotations" >
             <ul style="margin-left: -20px">
-              {{#each repo.usage}}
+              {{#each repo.kind}}
                 <li>{{this}} <input type="submit" value="Remove"
-                                    onclick="removeUsage('{{this}}');"></li>
+                                    onclick="removeKind('{{this}}');"></li>
               {{/each}}
             </ul>
           </td>
@@ -208,18 +208,18 @@
 
 <div class="panel panel-default">
   <div class="panel-heading">
-    <h3 class="panel-title">Usage</h3>
+    <h3 class="panel-title">Kind of software</h3>
     <div class="input-group">
       <span class="input-group-btn">
         <button type="submit" class="btn btn-info" data-toggle="collapse"
-                data-target="#usage""
+                data-target="#kind""
                 style="float: right; margin-top: -15px">Show</button>
       </span>
     </div>
   </div>
-  <div id="usage" class="panel-body collapse" data-toggle="false">
+  <div id="kind" class="panel-body collapse" data-toggle="false">
     <center>
-      <form action="/post-usage-terms" method="POST" role="form">
+      <form action="/post-kind-terms" method="POST" role="form">
         <table>
 
           <tr>

@@ -196,10 +196,10 @@
        });
      };
 
-     function removeUsage(term) {
+     function removeKind(term) {
        $.ajax({
          type: 'POST',
-         url: '/post-remove-usage',
+         url: '/post-remove-kind',
          // The array has to be passed either as JSON, or inside a {x: y} object.
          data: {term: term},
          error: function(jqxhr, options, thrownError) {
