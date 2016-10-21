@@ -321,7 +321,7 @@ app.post('/post-lcsh-frequent-terms', function(req, res) {
 });
 
 
-app.post('/post-usage-terms', function(req, res) {
+app.post('/post-kind-terms', function(req, res) {
     if (! req.session || ! req.session.repo)
         return errorLostSession(res);
 
@@ -331,11 +331,11 @@ app.post('/post-usage-terms', function(req, res) {
     if (selected) {
         var owner = req.session.repo.owner;
         var name  = req.session.repo.name;
-        log.info('post-usage-terms: adding to ' + owner + '/' + name);
+        log.info('post-kind-terms: adding to ' + owner + '/' + name);
         log.info('└─ Terms: ' + selected);
 
         var query = {owner: owner, name: name};
-        var ops   = {$addToSet: {'usage': {$each: selected}}};
+        var ops   = {$addToSet: {'kind': {$each: selected}}};
         REPOS.findOneAndUpdate(
             query,
             ops,
@@ -346,7 +346,7 @@ app.post('/post-usage-terms', function(req, res) {
                 renderFormWithRepoDescription(res, 'full-form', results, req.session);
             });
     } else {
-        log.info('post-usage-terms: nothing selected');
+        log.info('post-kind-terms: nothing selected');
         res.render('full-form', {repo: repo});
     }
 });
@@ -405,16 +405,16 @@ app.post('/post-remove-topic', function(req, res) {
 });
 
 
-app.post('/post-remove-usage', function(req, res) {
+app.post('/post-remove-kind', function(req, res) {
     if (! req.session || ! req.session.repo)
         return errorLostSession(res);
 
     var term  = req.body.term;
     var owner = req.session.repo.owner;
     var name  = req.session.repo.name;
-    log.info('Removing usage term ' + term + ' from ' + owner + '/' + name);
+    log.info('Removing kind term ' + term + ' from ' + owner + '/' + name);
     var query = {owner: owner, name: name};
-    var ops   = {$pull: {'usage': term}};
+    var ops   = {$pull: {'kind': term}};
     REPOS.findOneAndUpdate(
         query,
         ops,
