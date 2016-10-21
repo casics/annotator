@@ -383,6 +383,35 @@ app.post('/post-interfaces-terms', function(req, res) {
 });
 
 
+app.post('/post-notes', function(req, res) {
+    if (! req.session || ! req.session.repo)
+        return errorLostSession(res);
+
+    var notes = req.body.notes;
+    if (notes) {
+        var owner = req.session.repo.owner;
+        var name  = req.session.repo.name;
+        log.info('post-notes: adding to ' + owner + '/' + name);
+        log.info('└─ Notes: ' + notes);
+
+        var query = {owner: owner, name: name};
+        var ops   = {$set: {'notes': notes}};
+        REPOS.findOneAndUpdate(
+            query,
+            ops,
+            {upsert: false, new: true},
+            function(err, results) {
+                if (err) 
+                    return errorDatabaseAccess(REPOS, query, ops, res, err);
+                renderFormWithRepoDescription(res, 'full-form', results, req.session);
+            });
+    } else {
+        log.info('post-notes: nothing provided');
+        res.render('full-form', {repo: repo});
+    }
+});
+
+
 app.post('/post-remove-topic', function(req, res) {
     if (! req.session || ! req.session.repo)
         return errorLostSession(res);

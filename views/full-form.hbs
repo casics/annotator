@@ -181,6 +181,17 @@
           </td>
         </tr>
 
+        <tr>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+          <td><hr style="margin-bottom: 1ex; margin-top: 1.25ex"></td>
+        </tr>
+
+        <tr><th class="annotations" style="vertical-align: top">Annotation notes</th>
+          <td  style="vertical-align: top; font-style: italic; font-size: small">
+            {{repo.notes}}
+          </td>
+        </tr>
+
       </table>
     </div>
   {{else}}
@@ -1071,4 +1082,29 @@
     </center>
 
   {{/if}}
+</div>
+
+<!-- Notes panel -->
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Notes about annotations</h3>
+  </div>
+  <div class="panel-body">
+    <form action="/post-notes" method="POST" role="form" id="notesform">
+      <div class="form-horizontal">
+        <em class="text-info">Use the text panel below to explain unobvious
+          reasons for the annotations you chose....</em><br><br>
+        <div class="form-group">
+          <div class="col-md-6">
+            <textarea name="notes" form="notesform" class="form-control" 
+                      rows="5" placeholder="Text...." required></textarea>
+          </div>
+        </div>
+        <center>
+          <button type="submit" class="btn btn-primary"
+                  onclick="this.form.submit()">Save notes</button>
+        </center>
+      </div>
+    </form>
+  </div>
 </div>
