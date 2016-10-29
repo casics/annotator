@@ -131,8 +131,14 @@
           <td class="annotations" >
             <ul style="margin-left: -20px">
               {{#each repo.kind}}
-                <li>{{this}} <input type="submit" value="Remove"
-                                    onclick="removeKind('{{this}}');"></li>
+                <li>
+                  {{#if (eq this "component")}}      Library or component software{{/if}}
+                  {{#if (eq this "standalone")}}     Standalone software{{/if}}
+                  {{#if (eq this "user")}}           User software{{/if}}
+                  {{#if (eq this "infrastructure")}} Infrastructure software{{/if}}
+                  {{#if (eq this "embedded")}}       Embedded software{{/if}}
+                  <input type="submit" value="Remove" onclick="removeKind('{{this}}');">
+                </li>
               {{/each}}
             </ul>
           </td>
@@ -232,25 +238,36 @@
     <center>
       <form action="/post-kind-terms" method="POST" role="form">
         <table>
-
           <tr>
-            <td>
-              <input name="terms[selected]" type="checkbox" value="application">
-              <label for="terms[application]" style="font-weight: normal">Application software</label>
-            </td>
-          </tr>
 
-          <tr>
             <td>
               <input name="terms[selected]" type="checkbox" value="component">
-              <label for="terms[component]" style="font-weight: normal">Component software</label>
+              <label for="terms[component]" style="font-weight: normal">Library or component software</label>
             </td>
           </tr>
 
           <tr>
             <td>
-              <input name="terms[selected]" type="checkbox" value="embedded">
-              <label for="terms[embedded]" style="font-weight: normal">Embedded/Embeddable software</label>
+              <input name="terms[selected]" type="checkbox" value="standalone">
+              <label for="terms[standalone]" style="font-weight: normal">Standalone software</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="user" style="margin-left: 18px">
+              <label for="terms[user]" style="font-weight: normal">User software</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="infrastructure" style="margin-left: 18px">
+              <label for="terms[infrastructure]" style="font-weight: normal">Infrastructure software</label>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input name="terms[selected]" type="checkbox" value="embedded" style="margin-left: 18px">
+              <label for="terms[embedded]" style="font-weight: normal">Embedded software</label>
             </td>
           </tr>
 
