@@ -1,19 +1,3 @@
-// Configuration variables
-
-var app_host       = (process.env.HOST         || 'localhost');
-var app_port       = (process.env.PORT         || 3000);
-var app_protocol   = 'http';
-
-var result_limit   = (process.env.RESULT_LIMIT || 5000);
-
-var lcsh_host      = (process.env.LCSH_HOST    || 'localhost');
-var lcsh_port      = (process.env.LCSH_PORT    || 27017);
-
-var mongo_host     = (process.env.MONGO_HOST   || 'synonym.caltech.edu');
-var mongo_port     = (process.env.MONGO_PORT   || 9988);
-var mongo_user     = (process.env.MONGO_USER);
-var mongo_password = (process.env.MONGO_PASSWORD);
-
 
 // Package requirements.
 // .............................................................................
@@ -27,6 +11,9 @@ var escRegexp  = require('escape-string-regexp');
 var bodyParser = require('body-parser');
 var fileStore  = require('session-file-store');
 var url        = require('url');
+var fs         = require('fs');
+var ini        = require('ini');
+var opn        = require('opn');
 
 
 // Local requirements
@@ -39,6 +26,16 @@ var util       = require('./lib/util');
 var log        = require('./lib/log');
 var stringer   = require('./lib/stringer');
 var error      = require('./lib/error');
+
+
+// Configuration variables
+// .............................................................................
+
+var app_protocol   = 'http';
+var app_host       = (process.env.HOST         || 'localhost');
+var app_port       = (process.env.PORT         || 3000);
+
+var result_limit   = (process.env.RESULT_LIMIT || 5000);
 
 
 // App initialization.
@@ -108,14 +105,46 @@ app.use(session({
 }));
 
 
-// Mongoose initialization.
+// Mongoose connection initialization.
 // .............................................................................
+
+var config = ini.parse(fs.readFileSync(process.env.ANNOTATOR_CONFIG, 'utf-8'));
+
+// LoCTerms.
+
+var lcsh_host     = config.locterms.host;
+var lcsh_port     = config.locterms.port;
+var lcsh_user     = config.locterms.user;
+var lcsh_password = config.locterms.password;
+
+var LCSH  = lcshdb.connect('mongodb://' + lcsh_user + ':' + lcsh_password
+                           + '@' + lcsh_host + ':' + lcsh_port
+                          + '/lcsh-db?authSource=admin');
+
+if (LCSH)
+    log.info('Successfully connected to LoCTerms server.');
+else {
+    log.info('Failed to connect to LoCTerms server; exiting.');
+    process.exit();
+}
+
+// CASICS.
+
+var mongo_host     = config.casics.host;
+var mongo_port     = config.casics.port;
+var mongo_user     = config.casics.user;
+var mongo_password = config.casics.password;
 
 var REPOS = githubdb.connect('mongodb://' + mongo_user + ':' + mongo_password
                             + '@' + mongo_host + ':' + mongo_port
                             + '/github?authSource=admin');
 
-var LCSH  = lcshdb.connect('mongodb://' + lcsh_host + ':' + lcsh_port + '/lcsh-db');
+if (REPOS)
+    log.info('Successfully connected to CASICS server.');
+else {
+    log.info('Failed to connect to CASICS server; exiting.');
+    process.exit();
+}
 
 
 // User-level routes.
@@ -721,3 +750,5 @@ function errorBadUserInput(input, what, res) {
 app.listen(app_port, function() {
     log.info('Started on ' + app_protocol + '://' + app_host + ':' + app_port);
 });
+
+opn(app_protocol + '://' + app_host + ':' + app_port);
