@@ -94,7 +94,7 @@ repos_collection = None
 lcsh_collection = None
 
 def main(annotate=False, dev_mode=False, find=None,
-         list_repos=False, list_terms=False, summarize=False,
+         list_repos=False, list_terms=False,
          casics_user=None, casics_pswd=None, casics_host=None, casics_port=None,
          locterms_user=None, locterms_pswd=None, locterms_host=None, locterms_port=None,
          nokeyring=False):
@@ -105,7 +105,7 @@ def main(annotate=False, dev_mode=False, find=None,
     # Check arguments.
     if dev_mode:
         annotate = True
-    if annotate and (list_repos or list_terms or summarize or find):
+    if annotate and (list_repos or list_terms or find):
         raise SystemExit('Cannot combine --annotate with other actions.')
     if not (casics_user and casics_pswd and casics_host and casics_port):
         (casics_user, casics_pswd, casics_host, casics_port) = obtain_credentials(
@@ -127,7 +127,7 @@ def main(annotate=False, dev_mode=False, find=None,
            s_host != locterms_host or s_port != locterms_port:
             save_keyring_credentials(_LOCTERMS_KEYRING, locterms_user,
                                      locterms_pswd, locterms_host, locterms_port)
-    if not (annotate or list_repos or list_terms or summarize or find):
+    if not (annotate or list_repos or list_terms or find):
         raise SystemExit('No action specified. (Use -h for help.)')
 
     # Start node process with the browser-based user interface.  To
@@ -162,7 +162,7 @@ def main(annotate=False, dev_mode=False, find=None,
     repos_collection = get_repos(casics_user, casics_pswd, casics_host, casics_port)
     lcsh_collection = get_lcsh(locterms_user, locterms_pswd, locterms_host, locterms_port)
 
-    if list_repos or list_terms or summarize:
+    if list_repos or list_terms:
         msg('Gathering list of annotated repositories ...')
         annotated = {}
         for entry in repos_collection.find(
@@ -174,8 +174,6 @@ def main(annotate=False, dev_mode=False, find=None,
                                        'terms': entry['topics']['lcsh']}
         msg('Done.')
         print_totals(annotated)
-        if summarize:
-            print_stats(annotated)
         if list_repos:
             print_annotated(annotated)
         if list_terms:
@@ -210,7 +208,7 @@ def print_annotated(annotated):
         msg(terms_explained(entry['terms'], prefix='    '))
 
 
-def print_stats(annotated):
+def print_terms(annotated):
     global lcsh_collection
     (num, repos) = max_annotations(annotated)
     msg('Most number of terms on any repo: {}'.format(num))
@@ -318,7 +316,6 @@ main.__annotations__ = dict(
     find          = ('find repos annotated with the given term',             'option', 'f'),
     list_repos    = ('list annotated repos',                                 'flag',   'l'),
     list_terms    = ('list LCSH terms used in repo annotations so far',      'flag',   't'),
-    summarize     = ('print annotation summary statistics',                  'flag',   'm'),
     casics_user   = ('CASICS database user name',                            'option', 'u'),
     casics_pswd   = ('CASICS database user password',                        'option', 'p'),
     casics_host   = ('CASICS database server host',                          'option', 's'),
