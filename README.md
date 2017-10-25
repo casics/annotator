@@ -1,29 +1,44 @@
-Annotation interface
-====================
+CASICS Annotator
+================
 
-This is the interface to annotate repository entries with ontology terms.
+<img align="right" src=".graphics/casics-logo-small.png">
 
-Prerequisites
--------------
+The CASICS Annotator is a browser-based annotation interface for CASICS (the Comprehensive and Automated Software Inventory Creation System).  It is used by CASICS annotators to add ontology terms to repository records in the database.
 
-This interface is built using [node](http://nodejs.org).  After installing `node` in some way (e.g., perhaps using MacPorts or Homebrew), execute the following in a terminal shell (in this directory) in order to install the necessary dependencies:
+*Authors*:      [Michael Hucka](http://github.com/mhucka) and [Matthew J. Graham](https://github.com/doccosmos)<br>
+*Repository*:   [https://github.com/casics/annotator](https://github.com/casics/annotator)<br>
+*License*:      Unless otherwise noted, this content is licensed under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
 
-```csh
-sudo npm install
-sudo npm install -g nodemon
-```
 
-The annotation system requires the MongoDB-based LCSH database to be also installed.  See [../lcsh](../lcsh) for more information.
+☀ Introduction
+-----------------------------
 
-Starting the interface
-----------------------
+CASICS (the Comprehensive and Automated Software Inventory Creation System) is a project to create a proof of concept that uses machine learning techniques to analyze source code in software repositories and classify the repositories.  To do this, we need to generate a labeled training set consisting of repositories labeled with ontology terms by human evaluators.  The CASICS Annotator is the interface we use to do the labeling.
 
-The following commands executed in a terminal shell should start the system and open a browser window on the annotation form:
+The CASICS Annotator is written in a combination of Python and JavaScript.  The lower-level command line interface is written in Python, while the browser-based interface is written in JavaScript.  The command-line interface program (called simply `annotator`) is used to start the JavaScript portion using [node.js](https://nodejs.org/en/). 
 
-```csh
-cd ../lcsh
-./start-local-mongo.sh
-cd ../annotator
-./start.sh
-open http://localhost:3000
-```
+
+☛ Installation and configuration
+--------------------------------
+
+The CASICS Annotator relies on two network services to do its work: [LoCTerms](https://github.com/casics/locterms), a database of terms from the Library of Congress Subject Headings, and the [CASICS database server](https://github.com/casics/server).  Before using the annotation system, both of those servers need to be running.
+
+
+⁇ Getting help and support
+--------------------------
+
+If you find an issue, please submit it in [the GitHub issue tracker](https://github.com/casics/annotator/issues) for this repository.
+
+
+♬ Contributing &mdash; info for developers
+------------------------------------------
+
+A lot remains to be done on CASICS in many areas.  We would be happy to receive your help and participation if you are interested.  Please feel free to contact the developers either via GitHub or the mailing list [casics-team@googlegroups.com](casics-team@googlegroups.com).
+
+Everyone is asked to read and respect the [code of conduct](CONDUCT.md) when participating in this project.
+
+
+❤️ Acknowledgments
+------------------
+
+Funding for this and other CASICS work has come from the [National Science Foundation](https://nsf.gov) via grant NSF EAGER #1533792 (Principal Investigator: Michael Hucka).
