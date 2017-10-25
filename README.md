@@ -1,7 +1,7 @@
 CASICS Annotator
 ================
 
-<img align="right" src=".graphics/casics-logo-small.svg">
+<img width="100px" align="right" src=".graphics/casics-logo-small.svg">
 
 The CASICS Annotator is a browser-based annotation interface for CASICS (the Comprehensive and Automated Software Inventory Creation System).  It is used by CASICS annotators to add ontology terms to repository records in the database.
 
