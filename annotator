@@ -12,9 +12,6 @@ Basic usage:
     annotator -t
         Generate a list of LCSH terms used in all annotations so far.
 
-    annotator -m
-        Print some summary numbers about the state of annotations.
-
 By default, this uses the operating system's keyring/keychain functionality
 to get the user name and password needed to access both the CASICS database
 server and the LoCTerms database over the network.  If no such credentials
@@ -106,9 +103,6 @@ annotation tasks, also requires a LoCTerms server to be running.  Basic usage:
 
     annotator -t
         Generate a list of LCSH terms used in all annotations so far.
-
-    annotator -m
-        Print some summary numbers about the state of annotations.
 
 By default, this uses the operating system's keyring/keychain functionality
 to get the user name and password needed to access both the CASICS database
