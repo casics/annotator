@@ -49,7 +49,6 @@ sys.path.append('../common')
 
 from casicsdb import *
 from credentials import *
-from messages import *
 
 
 # Global constants.
@@ -303,6 +302,15 @@ def write_config(tmpfile, section_name, user, password, host, port):
     write_value('user', user)
     write_value('password', password)
     tmpfile.flush()
+
+
+def msg(*args):
+    '''Like the standard print(), but flushes the output immediately.
+    This is useful when piping the output of a script, because Python by
+    default will buffer the output in that situation and this makes it very
+    difficult to see what is happening in real time.
+    '''
+    print(text, flush=True)
 
 
 # Plac annotations for main function arguments
