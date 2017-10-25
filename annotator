@@ -38,17 +38,14 @@ from   datetime import datetime
 import operator
 import os
 import plac
+from   pymongo import MongoClient
 import subprocess
 import sys
 import tempfile
 from   time import sleep
 from   timeit import default_timer as timer
 
-sys.path.append('../database')
-sys.path.append('../common')
-
-from casicsdb import *
-from credentials import *
+from utils.credentials import *
 
 
 # Global constants.
@@ -79,7 +76,7 @@ _CASICS_DEFAULT_HOST = 'localhost'
 _CASICS_DEFAULT_PORT = 27017
 '''Default network port for CASICS server if no explicit port number is given.'''
 
-_CASICS_DB_NAME = 'lcsh-db'
+_CASICS_DB_NAME = 'github'
 '''The name of the CASICS database.'''
 
 _CASICS_KEYRING = "org.casics.casics"
@@ -272,15 +269,20 @@ def term_stats(annotated):
 
 
 def get_repos(user, password, host, port):
-    casicsdb = CasicsDB(host=host, port=port, user=user, password=password)
-    github_db = casicsdb.open('github')
+    db = MongoClient('mongodb://{}:{}@{}:{}/github?authSource=admin'
+                     .format(user, password, host, port),
+                     serverSelectionTimeoutMS=_CONN_TIMEOUT,
+                     tz_aware=True, connect=True, socketKeepAlive=True)
+    github_db = db[_CASICS_DB_NAME]
     repos_collection = github_db.repos
     return repos_collection
 
 
 def get_lcsh(user, password, host, port):
-    db = MongoClient('mongodb://{}:{}@{}:{}/lcsh-db?authSource=admin'.format(
-        user, password, host, port), serverSelectionTimeoutMS=_CONN_TIMEOUT)
+    db = MongoClient('mongodb://{}:{}@{}:{}/lcsh-db?authSource=admin'
+                     .format(user, password, host, port),
+                     serverSelectionTimeoutMS=_CONN_TIMEOUT,
+                     tz_aware=True, connect=True, socketKeepAlive=True)
     lcsh_db = db[_LOCTERMS_DB_NAME]
     lcsh_terms = lcsh_db.terms
     return lcsh_terms
@@ -304,13 +306,24 @@ def write_config(tmpfile, section_name, user, password, host, port):
     tmpfile.flush()
 
 
+def e_path(entry):
+    '''Given an entry, return a full path of the form "owner/repo-name".'''
+    return entry['owner'] + '/' + entry['name']
+
+
+def e_summary(entry):
+    '''Summarize the full path and id number of the given entry.'''
+    summary = '{} (#{})'.format(e_path(entry), entry['_id'])
+    return summary.encode(sys.stdout.encoding, errors='replace').decode('ascii')
+
+
 def msg(*args):
     '''Like the standard print(), but flushes the output immediately.
     This is useful when piping the output of a script, because Python by
     default will buffer the output in that situation and this makes it very
     difficult to see what is happening in real time.
     '''
-    print(text, flush=True)
+    print(*args, flush=True)
 
 
 # Plac annotations for main function arguments
