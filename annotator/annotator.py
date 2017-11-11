@@ -134,16 +134,16 @@ CASICS database and LoCTerms database processes are listening.
             locterms_host, locterms_port, _LOCTERMS_DEFAULT_HOST, _LOCTERMS_DEFAULT_PORT)
     if keyring:
         # Save the credentials if they're different from what's saved.
-        (s_user, s_pswd, s_host, s_port) = get_keyring_credentials(_CASICS_KEYRING)
+        (s_user, s_pswd, s_host, s_port) = get_credentials(_CASICS_KEYRING)
         if s_user != casics_user or s_pswd != casics_pswd or \
            s_host != casics_host or s_port != casics_port:
-            save_keyring_credentials(_CASICS_KEYRING, casics_user, casics_pswd,
-                                     casics_host, casics_port)
-        (s_user, s_pswd, s_host, s_port) = get_keyring_credentials(_LOCTERMS_KEYRING)
+            save_credentials(_CASICS_KEYRING, casics_user, casics_pswd,
+                             casics_host, casics_port)
+        (s_user, s_pswd, s_host, s_port) = get_credentials(_LOCTERMS_KEYRING)
         if s_user != locterms_user or s_pswd != locterms_pswd or \
            s_host != locterms_host or s_port != locterms_port:
-            save_keyring_credentials(_LOCTERMS_KEYRING, locterms_user,
-                                     locterms_pswd, locterms_host, locterms_port)
+            save_credentials(_LOCTERMS_KEYRING, locterms_user,
+                             locterms_pswd, locterms_host, locterms_port)
     if not (annotate or list_repos or list_terms or find):
         raise SystemExit('No action specified. (Use -h for help.)')
 
@@ -166,8 +166,9 @@ CASICS database and LoCTerms database processes are listening.
                     cmd += ['nodemon', '--debug', '-e', 'js,hbs']
                 else:
                     cmd += ['node', 'index.js']
+                here = os.path.dirname(__file__)
                 # Save the return value so we can exit with that value.
-                proc = subprocess.Popen(cmd)
+                proc = subprocess.Popen(cmd, cwd=here)
                 proc.wait()
             finally:
                 proc.terminate()
