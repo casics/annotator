@@ -1,35 +1,7 @@
 #!/usr/bin/env python3
 '''
 annotator: annotate CASICS database entries and perform other annotation tasks
-
-Basic usage:
-    annotator -a
-        Start the annotation interface in a web browser.
-
-    annotator -l
-        Generate a list of annotated repositories.
-
-    annotator -t
-        Generate a list of LCSH terms used in all annotations so far.
-
-By default, this uses the operating system's keyring/keychain functionality
-to get the user name and password needed to access both the CASICS database
-server and the LoCTerms database over the network.  If no such credentials
-are found, it will query the user interactively for the user name and
-password for each system separately (so, two sets), and then store them in
-the keyring/keychain (unless the -X argument is given) so that it does not
-have to ask again in the future.  It is also possible to supply user names
-and passwords directly using command line arguments, but this is discouraged
-because it is insecure on multiuser computer systems. (Other users could run
-"ps" in the background and see your credentials).
-
-Additional arguments can be used to specify the host and port on which the
-CASICS database and LoCTerms database processes are listening.
 '''
-__version__ = '1.0.0'
-__author__  = 'Michael Hucka <mhucka@caltech.edu>'
-__email__   = 'mhucka@caltech.edu'
-__license__ = 'GPLv3'
 
 from   datetime import datetime
 import operator
@@ -42,7 +14,11 @@ import tempfile
 from   time import sleep
 from   timeit import default_timer as timer
 
-from utils.credentials import *
+sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
+
+from common.casics import *
+from common.messages import *
+from common.credentials import *
 
 
 # Global constants.
@@ -80,11 +56,33 @@ _CASICS_KEYRING = "org.casics.casics"
 '''The name of the keyring entry for LoCTerms client users.'''
 
 
-# Main body.
+# Global variables.
 # .............................................................................
 
 repos_collection = None
 lcsh_collection = None
+
+
+# Main body.
+# .............................................................................
+
+# Plac automatically adds a -h argument for help, so no need to do it here.
+@plac.annotations(
+    annotate      = ('start the annotation web interface',               'flag',   'a'),
+    dev_mode      = ('start interface in development mode (implies -a)', 'flag',   'A'),
+    find          = ('find repos annotated with the given term',         'option', 'f'),
+    list_repos    = ('list annotated repos',                             'flag',   'l'),
+    list_terms    = ('list LCSH terms used in repo annotations so far',  'flag',   't'),
+    casics_user   = ('CASICS database user name',                        'option', 'u'),
+    casics_pswd   = ('CASICS database user password',                    'option', 'p'),
+    casics_host   = ('CASICS database server host',                      'option', 's'),
+    casics_port   = ('CASICS database connection port number',           'option', 'o'),
+    locterms_user = ('LoCTerms database user name',                      'option', 'U'),
+    locterms_pswd = ('LoCTerms database user password',                  'option', 'P'),
+    locterms_host = ('LoCTerms database server host',                    'option', 'S'),
+    locterms_port = ('LoCTerms database connection port number',         'option', 'O'),
+    nokeyring     = ('do not use a keyring',                             'flag',   'X'),
+)
 
 def main(annotate=False, dev_mode=False, find=None,
          list_repos=False, list_terms=False, nokeyring=False,
@@ -327,55 +325,6 @@ def write_config(tmpfile, section_name, user, password, host, port):
     write_value('user', user)
     write_value('password', password)
     tmpfile.flush()
-
-
-def e_path(entry):
-    '''Given an entry, return a full path of the form "owner/repo-name".'''
-    return entry['owner'] + '/' + entry['name']
-
-
-def e_summary(entry):
-    '''Summarize the full path and id number of the given entry.'''
-    summary = '{} (#{})'.format(e_path(entry), entry['_id'])
-    return summary.encode(sys.stdout.encoding, errors='replace').decode('ascii')
-
-
-def msg(*args):
-    '''Like the standard print(), but flushes the output immediately.
-    This is useful when piping the output of a script, because Python by
-    default will buffer the output in that situation and this makes it very
-    difficult to see what is happening in real time.
-    '''
-    print(*args, flush=True)
-
-
-# Plac annotations for main function arguments
-# .............................................................................
-# Argument annotations are: (help, kind, abbrev, type, choices, metavar)
-# Plac automatically adds a -h argument for help, so no need to do it here.
-
-main.__annotations__ = dict(
-    annotate      = ('start the annotation web interface',                   'flag',   'a'),
-    dev_mode      = ('start web interface in development mode (implies -a)', 'flag',   'A'),
-    find          = ('find repos annotated with the given term',             'option', 'f'),
-    list_repos    = ('list annotated repos',                                 'flag',   'l'),
-    list_terms    = ('list LCSH terms used in repo annotations so far',      'flag',   't'),
-    casics_user   = ('CASICS database user name',                            'option', 'u'),
-    casics_pswd   = ('CASICS database user password',                        'option', 'p'),
-    casics_host   = ('CASICS database server host',                          'option', 's'),
-    casics_port   = ('CASICS database connection port number',               'option', 'o'),
-    locterms_user = ('LoCTerms database user name',                          'option', 'U'),
-    locterms_pswd = ('LoCTerms database user password',                      'option', 'P'),
-    locterms_host = ('LoCTerms database server host',                        'option', 'S'),
-    locterms_port = ('LoCTerms database connection port number',             'option', 'O'),
-    nokeyring     = ('do not use a keyring',                                 'flag',   'X'),
-)
-
-
-# Entry point
-# .............................................................................
-
-plac.call(main)
 
 
 # For Emacs users
