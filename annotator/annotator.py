@@ -16,7 +16,7 @@ from   timeit import default_timer as timer
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
-from common.casics import *
+from common.casicsdb import *
 from common.messages import *
 from common.credentials import *
 
